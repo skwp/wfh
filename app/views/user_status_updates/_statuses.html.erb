@@ -1,0 +1,10 @@
+<section>
+<table style='border-collapse:collapse'>          
+<% UserStatusUpdate.find_all_by_date(date, :order => 'status_id asc').reject{|s| s.unknown?}.each do |update| %>
+  <tr>
+    <td><strong><%= update.user.login %></strong></td>
+    <td><%= render_status update.status %></td>
+  </tr>
+<% end %>          
+</table>
+</section>

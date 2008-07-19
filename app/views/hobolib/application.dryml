@@ -1,0 +1,5 @@
+<!-- Define your application-wide tags here -->
+
+<taglib src="plugins/hobo/tags/rapid"/>
+
+<set_theme name="default"/>

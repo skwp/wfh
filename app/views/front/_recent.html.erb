@@ -1,0 +1,3 @@
+<% UserStatusUpdate.recent.each do |update| %>
+  <p><strong><%= update.user.login %></strong> <%= render_status update.status %> on <strong><%= update.date.strftime("%A") %> the <%= update.date.day.ordinalize %></strong></p>
+<% end %>

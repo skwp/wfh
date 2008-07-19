@@ -1,0 +1,14 @@
+<% User.find(:all).each do |user| %>
+  <% if user.working_on_statuses.count > 0 %>
+  <div class='working-statuses'>
+    <p style='margin-bottom:0'><strong style='text-decoration:underline; color: #406BBE'><%= user.login %></strong></p>
+    <ul class='blue' style='padding-left:20px; margin-top:0; padding-top:0'>
+    <% user.working_on_statuses.limit(3).each do |status| %>
+      <li id='<%= 'first-status' if status == user.working_on_statuses.first %>'>
+          <strong><%= status.text %></strong> <span style='font-size: 10px; color:#aaa'><%= time_ago_in_words(status.created_at)  %> ago</span>
+      </li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+<% end %>

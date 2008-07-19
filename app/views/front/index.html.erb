@@ -1,0 +1,82 @@
+
+
+<% content_for :intro do %>
+<h1 style='margin-bottom:0'><label>Working From Home?</label></h1>
+<h3 style='margin-top:0;margin-left:20px'>Find a day, pick a status. <%= link_to "#{image_tag('rss.png', :style => 'width:16px; height: 16px')}Get The Feed", "/rss", :style => "color:darkorange" %></h3>  
+<p style='margin-left:20px'><b style='color: #bbb'>Hint: bookmark this page so you don't have to log in.</b></p>        
+<div style='clear:both'></div>
+
+<% end %>
+<div style='clear:both'></div>
+
+<% content_for :maincol do %>
+  <% unless params[:name]  %>
+    <panel class='red'>
+      <h2>Please log in by clicking your name</h2>        
+      <p style='font-size:16px'><%= User.find(:all).map{|u| link_to_unless_current u.login, homepage_url(:name => u.login)}.join(" ") %></p>
+      <p><b style='color: #bbb'>Hint: bookmark the page after you click your name above, and you'll have instant access to your status</b></p>        
+    </panel>
+  <% else %>
+    <% panel(:class => 'blue') do %>
+      <h2>What are you up to?</h2>
+      <% form_remote_tag :url => {:controller =>'working_on', :action => 'create', :user => params[:name]}, :complete => "$('text').clear()" do %>
+        <%= text_field_tag 'text', nil, :size => '40' %> <%= submit_tag "Update" %>
+      <% end %>      
+      <script type="text/javascript" charset="utf-8">
+        $('text').focus();
+      </script>
+    <% end %>
+
+    <% panel(:class => 'green') do %>
+
+      <% 0.upto(7) do |i| %>
+        <% date = Date.today+i %>
+        <% next if ['0','6'].include?(date.strftime("%w"))  #skip weekends %>
+        
+        <h2>
+          <%= date.display %>
+          
+          
+        </h2>
+        <div style="padding:0.5em">
+          <% form_remote_tag :url => {:controller => 'user_status_updates', :action => 'update_status', :date => date} do %>
+          <%= hidden_field_tag :user, @current_user.id %>
+          <label><strong style='font-size:16px'><%= @current_user.login %></strong></label>
+          <%= select_tag 'status', options_from_collection_for_select(Status.find(:all), :id, :status, @default_status), :id => "status-dropdown-#{date}", :onchange => "$('submit-#{date}').click();" %>
+          <%= submit_tag 'Save', :id => "submit-#{date}", :style => 'display:none'%>
+          <% end %>
+          
+        </div>
+        <div class='statuses' id='statuses-<%= Date.today+i %>'>
+          <%= render :partial => 'user_status_updates/statuses', :locals => {:date => Date.today+i} %>
+        </div>
+      <% end %>
+
+
+      <% end %>
+  <% end %>
+
+<% end %>
+
+<% content_for :sidecol do %>
+
+  <% panel(:class => 'dblue') do %>
+  
+    <h2>Currently working on...</h2>
+    <div class='section'>
+      <div id='working-on'>
+        <%= render :partial => 'working_on/working_on' %>
+      </div>
+    </div>
+  <% end %>
+  <% panel(:class => 'dgreen') do %>
+  
+    <h2>Recent Status Updates</h2>
+    <div class='section'>
+      <div id='recent'>
+      <%= render :partial => 'recent' %>
+      </div>
+    </div>
+  <% end %>
+  
+<% end %>

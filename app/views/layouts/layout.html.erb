@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>Ruby on Rails: Welcome aboard</title>
+    <%= stylesheet_link_tag 'application' %>
+    <script type="text/javascript" src="javascripts/prototype.js"></script>
+    <script type="text/javascript" src="javascripts/effects.js"></script>
+    <script type="text/javascript">
+      function about() {
+        if (Element.empty('about-content')) {
+          new Ajax.Updater('about-content', 'rails/info/properties', {
+            method:     'get',
+            onFailure:  function() {Element.classNames('about-content').add('failure')},
+            onComplete: function() {new Effect.BlindDown('about-content', {duration: 0.25})}
+          });
+        } else {
+          new Effect[Element.visible('about-content') ? 
+            'BlindUp' : 'BlindDown']('about-content', {duration: 0.25});
+        }
+      }
+      
+      window.onload = function() {
+        $('search-text').value = '';
+        $('search').onsubmit = function() {
+          $('search-text').value = 'site:rubyonrails.org ' + $F('search-text');
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="page">
+    <div id="page_top"><div id="page_right"><div id="page_bottom"><div id="page_left"><div id="page_corner02"><div id="page_corner04"><div id="page_corner03"><div id="page_corner01">
+    <div id="page_inner_top">
+      <div id='header'>
+        <%= yield :header %>
+        <div class="logo"><%= yield :logo %></div>
+      </div>
+      <div id='intro'><%= yield :intro %></div>
+
+      <div id="sidebar" class='sidecol'>
+        <%= yield :sidecol %>
+      </div>
+      <div id="content" class='maincol'>
+        <%= yield :maincol %>
+      </div>
+      <div style='clear:both'></div>
+    </div>
+
+    </div></div></div></div></div></div></div></div>
+    </div>
+      
+      <div id="footer">&nbsp;</div>
+    </div>
+  </body>
+</html>
