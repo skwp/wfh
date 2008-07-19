@@ -10,11 +10,11 @@
 <div style='clear:both'></div>
 
   <% unless params[:name]  %>
-    <panel class='red'>
+    <% panel :class => 'red' do %>
       <h2>Please log in by clicking your name</h2>        
       <p style='font-size:16px'><%= User.find(:all).map{|u| link_to_unless_current u.login, homepage_url(:name => u.login)}.join(" ") %></p>
       <p><b style='color: #bbb'>Hint: bookmark the page after you click your name above, and you'll have instant access to your status</b></p>        
-    </panel>
+    <% end %>
   <% else %>
     <% panel(:class => 'blue') do %>
       <h2>What are you up to?</h2>
