@@ -33,7 +33,7 @@
         <% next if ['0','6'].include?(date.strftime("%w"))  #skip weekends %>
         
         <h2>
-          <%= date.display %>
+          <%= date.to_s(:day) %>
           
           
         </h2>
